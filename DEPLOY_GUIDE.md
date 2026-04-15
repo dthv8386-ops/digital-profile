@@ -3,81 +3,66 @@
 ## Vấn đề hiện tại
 Profile hiện tại chỉ chạy local trên máy của bạn (`http://localhost:8000`). Bạn bè không thể truy cập được vì đây là server cục bộ.
 
-## Các giải pháp deploy online
+## Deploy lên GitHub Pages (Khuyến nghị)
 
-### 1. GitHub Pages (Khuyến nghị - Miễn phí, Đơn giản)
-**Chi phí:** Miễn phí hoàn toàn  
-**Ưu điểm:**
-- Hoàn toàn miễn phí
-- Dễ setup (chỉ cần GitHub account)
-- Tự động deploy khi push code
-- HTTPS tự động
-- Tốc độ nhanh (CDN của GitHub)
+### Bước 1: Chuẩn bị GitHub Repository
+1. Đăng nhập GitHub.com
+2. Click "New repository"
+3. Đặt tên: `digital-profile` (hoặc tên bất kỳ)
+4. Chọn **Public** (để miễn phí)
+5. **Không** check "Add a README file"
+6. Click "Create repository"
 
-**Nhược điểm:**
-- Chỉ hỗ trợ static sites (HTML/CSS/JS)
-- Không thể chạy backend Python/Flask
-- Giới hạn 1GB storage, 100GB bandwidth/tháng
+### Bước 2: Push code lên GitHub
+Code đã được commit local. Bây giờ:
 
-**Cách deploy:**
-1. Tạo repository trên GitHub (public)
-2. Push code lên repo
-3. Vào Settings > Pages > Source: Deploy from a branch > Branch: main
-4. Link sẽ là: `https://[username].github.io/[repo-name]/`
+1. Sao chép URL repository (ví dụ: `https://github.com/yourusername/digital-profile.git`)
 
-### 2. Vercel (Miễn phí, Linh hoạt)
-**Chi phí:** Miễn phí cho hobby projects  
-**Ưu điểm:**
-- Miễn phí với giới hạn hợp lý
-- Deploy tự động từ GitHub
-- Hỗ trợ static sites và serverless functions
-- Tốc độ rất nhanh
-- Preview deployments cho mỗi PR
+2. Chạy lệnh sau (thay `yourusername` và `digital-profile` bằng tên thật):
+```bash
+git remote add origin https://github.com/yourusername/digital-profile.git
+git push -u origin main
+```
 
-**Nhược điểm:**
-- Free tier có giới hạn bandwidth (100GB/tháng)
-- Serverless functions có execution time limit
-- Có thể phức tạp hơn GitHub Pages nếu cần backend
+### Bước 3: Kích hoạt GitHub Pages
+1. Vào repository trên GitHub
+2. Click tab "Settings"
+3. Cuộn xuống "Pages" (trái sidebar)
+4. Ở "Source", chọn "Deploy from a branch"
+5. Branch: `main`, folder: `/ (root)`
+6. Click "Save"
 
-**Cách deploy:**
-1. Kết nối GitHub với Vercel
-2. Import project
-3. Deploy tự động
+### Bước 4: Truy cập link
+Sau 1-2 phút, link sẽ là: `https://yourusername.github.io/digital-profile/`
 
-### 3. Netlify (Miễn phí, Tương tự Vercel)
-**Chi phí:** Miễn phí cho basic plans  
-**Ưu điểm:**
-- Miễn phí với 100GB bandwidth/tháng
-- Deploy từ GitHub/GitLab
-- Form handling built-in
-- Preview deployments
-- Tốc độ tốt
+**Ví dụ:** Nếu username là `johndoe`, link sẽ là `https://johndoe.github.io/digital-profile/`
 
-**Nhược điểm:**
-- Free tier giới hạn functions invocations
-- Không mạnh bằng Vercel cho serverless
+## Các giải pháp khác
 
-### 4. Heroku/Render (Cho full-stack)
-**Chi phí:** Free tier có sẵn, sau đó ~$7/tháng  
-**Ưu điểm:**
-- Chạy được full backend (Flask + database nếu cần)
-- Sleep after inactivity (có thể wake up chậm)
-- Hỗ trợ nhiều ngôn ngữ
+### Vercel (Nếu muốn serverless)
+1. Đăng ký Vercel.com (miễn phí)
+2. Connect GitHub
+3. Import project
+4. Deploy tự động
 
-**Nhược điểm:**
-- Free tier sleep sau 30 phút không dùng
-- Setup phức tạp hơn
-- Chi phí cao hơn khi scale
-- Tốc độ khởi động chậm khi sleep
+### Heroku (Nếu cần backend Flask)
+1. Đăng ký Heroku.com
+2. Install Heroku CLI
+3. `heroku create`
+4. Push code
+5. Link: `https://your-app-name.herokuapp.com`
 
-## Khuyến nghị cho project này
+## So sánh chi phí
 
-**GitHub Pages** là lựa chọn tốt nhất vì:
-- Profile của bạn chủ yếu là static (HTML/CSS/JS)
-- Telegram integration có thể fallback trực tiếp từ frontend
-- Đơn giản và miễn phí
+| Platform | Chi phí | Bandwidth | Storage | Backend Support |
+|----------|---------|-----------|---------|-----------------|
+| GitHub Pages | Miễn phí | 100GB/tháng | 1GB | Không |
+| Vercel | Miễn phí | 100GB/tháng | Không giới hạn | Serverless |
+| Netlify | Miễn phí | 100GB/tháng | 100GB | Serverless |
+| Heroku | Free tier, sau $7/tháng | 2TB/tháng | 512MB | Full backend |
 
-Nếu muốn backend Flask chạy online, dùng **Render** hoặc **Railway** (~$5-7/tháng).
-
-Bạn muốn tôi hướng dẫn deploy bằng cách nào?</content>
+## Lưu ý quan trọng
+- **Telegram integration**: Vì GitHub Pages chỉ static, form sẽ tự động fallback gửi trực tiếp đến Telegram (đã code sẵn)
+- **HTTPS**: Tất cả platforms trên đều có HTTPS tự động
+- **Tốc độ**: GitHub Pages rất nhanh với CDN global</content>
 <parameter name="filePath">c:\Users\Admin\Downloads\BaiTapDauTien\DEPLOY_GUIDE.md
