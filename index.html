@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Profile - Đỗ Thị Hồng Vân</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="50" r="3" fill="rgba(255,255,255,0.05)"/></svg>') repeat;
+            pointer-events: none;
+        }
+        .profile-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 450px;
+            width: 90%;
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 6px solid rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+        .name {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .position {
+            font-size: 20px;
+            margin-bottom: 35px;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        .facebook-btn {
+            background: #1877F2;
+            color: white;
+        }
+        .facebook-btn:hover {
+            background: #166FE5;
+        }
+        .zalo-btn {
+            background: #0068FF;
+            color: white;
+        }
+        .zalo-btn:hover {
+            background: #005CE6;
+        }
+        .gift-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ffa500, #ffff00);
+            color: white;
+            animation: pulse 2s infinite;
+        }
+        .gift-btn:hover {
+            background: linear-gradient(45deg, #ff5252, #ff8c00, #ffeb3b);
+            animation: none;
+        }
+        .message-btn {
+            background: linear-gradient(45deg, #9b59b6, #e74c3c);
+            color: white;
+        }
+        .message-btn:hover {
+            background: linear-gradient(45deg, #8e44ad, #c0392b);
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1000;
+        }
+        .message-form {
+            margin-top: 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            display: none;
+        }
+        .message-form.active {
+            display: flex;
+        }
+        .message-form h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .message-form input,
+        .message-form textarea {
+            width: 100%;
+            max-width: 350px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .message-form input::placeholder,
+        .message-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .message-form input:focus,
+        .message-form textarea:focus {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        .submit-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            margin-top: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .submit-btn:hover {
+            background: linear-gradient(45deg, #218838, #17a2b8);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <img src="https://cdn.phototourl.com/free/2026-04-15-1440d53b-f535-4b3e-bb90-915b9e863913.jpg" alt="Avatar" class="avatar">
+        <div class="name">Đỗ Thị Hồng Vân</div>
+        <div class="position">Marketing tại Homi</div>
+        <div class="buttons">
+            <a href="https://www.facebook.com" class="btn facebook-btn"><i class="fab fa-facebook-f"></i> Facebook</a>
+            <a href="https://zalo.me" class="btn zalo-btn"><i class="fas fa-comment"></i> Zalo</a>
+            <button class="btn gift-btn" onclick="launchFireworks()"><i class="fas fa-gift"></i> Tặng quà</button>
+            <button class="btn message-btn" onclick="toggleMessageForm()"><i class="fas fa-envelope"></i> Để lại lời nhắn</button>
+        </div>
+        <div class="message-form">
+            <input type="text" id="senderName" placeholder="Tên của bạn" required>
+            <textarea id="message" placeholder="Lời nhắn..." rows="4" required></textarea>
+            <button class="btn submit-btn" onclick="sendMessage()">Gửi</button>
+        </div>
+    </div>
+    <canvas id="fireworksCanvas"></canvas>
+    <script>
+        const TELEGRAM_API_TOKEN = '8689598699:AAFZnv65M1echQF4moiHvX0f2IZ7PbmGNQM';
+        const TELEGRAM_CHAT_ID = '5513473150';
+        const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_API_TOKEN}/sendMessage`;
+
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+
+        function createParticle(x, y, color) {
+            return {
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * 12,
+                vy: (Math.random() - 0.5) * 12,
+                life: 120,
+                color: color,
+                size: Math.random() * 4 + 2
+            };
+        }
+
+        function launchFireworks() {
+            const colors = ['#ff6b6b', '#ffa500', '#ffff00', '#00ff00', '#00ffff', '#ff00ff', '#ff1493', '#00bfff'];
+            for (let i = 0; i < 80; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(createParticle(x, y, color));
+            }
+        }
+
+        function updateParticles() {
+            particles = particles.filter(p => p.life > 0);
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.15; // gravity
+                p.life--;
+                p.size *= 0.98; // shrink
+            });
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = p.color;
+            });
+        }
+
+        function animate() {
+            updateParticles();
+            drawParticles();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Toggle message form visibility
+        function toggleMessageForm() {
+            const messageForm = document.querySelector('.message-form');
+            messageForm.classList.toggle('active');
+        }
+
+        // Send message
+        function sendMessage() {
+            const name = document.getElementById('senderName').value.trim();
+            const message = document.getElementById('message').value.trim();
+            
+            if (!name || !message) {
+                alert('Vui lòng nhập tên và lời nhắn.');
+                return;
+            }
+
+            const telegramMessage = `📬 Tin nhắn mới từ ${name}:\n\n${message}`;
+
+            // Thử gửi qua backend trước
+            fetch('http://localhost:5000/send-message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Cảm ơn ${name}! Lời nhắn của bạn đã được gửi.`);
+                    document.getElementById('senderName').value = '';
+                    document.getElementById('message').value = '';
+                } else {
+                    throw new Error(data.error || 'Lỗi backend');
+                }
+            })
+            .catch(() => {
+                // Nếu backend không chạy, thử gửi trực tiếp đến Telegram
+                fetch(TELEGRAM_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: telegramMessage
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert(`Cảm ơn ${name}! Lời nhắn của bạn đã được gửi về Telegram.`);
+                        document.getElementById('senderName').value = '';
+                        document.getElementById('message').value = '';
+                    } else {
+                        alert('Lỗi Telegram: ' + (data.description || 'Không xác định'));
+                        console.error('Telegram error:', data);
+                    }
+                })
+                .catch(error => {
+                    alert('Lỗi kết nối: ' + error.message);
+                    console.error('Error:', error);
+                });
+            });
+        }
+
+        // Optional: avoid errors if the old contactForm does not exist
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('senderName').value;
+                const message = document.getElementById('message').value;
+                alert(`Cảm ơn ${name}! Lời nhắn của bạn: "${message}" đã được gửi.`);
+                document.getElementById('senderName').value = '';
+                document.getElementById('message').value = '';
+            });
+        }
+    </script>
+</body>
+</html>
